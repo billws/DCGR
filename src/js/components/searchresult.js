@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import { RepoBlock, RepoTitle, RepoDescription, RepoInfo, RepoInfoItem, RepoLanguageDot, RepoLanguage } from "../stylecomponents/searchcomponents";
 import { DetectPosition } from "../pages/searchgitrepo";
 
 class SearchBottom extends React.Component {
@@ -22,7 +23,7 @@ class SearchBottom extends React.Component {
         }
         this.setState({
             ...this.state, timeOutId: setTimeout(() => {
-                if (DetectPosition(this.selfRef.current.getBoundingClientRect(), window)) {
+                if (this.selfRef.current !== null && DetectPosition(this.selfRef.current.getBoundingClientRect(), window)) {
                     this.setState({ isTouch: true, timeOutId: null });
                     if (typeof this.props.toEnd === "function") {
                         this.props.toEnd();
@@ -39,38 +40,57 @@ class SearchBottom extends React.Component {
     }
 }
 
-const SearchItem = ({ id, title, url }) => {
-    return (<li key={id}>
-        <div>
-            {title}
-        </div>
-        <div>
-            <a href={url}>Link</a>
-        </div>
-    </li>);
+SearchBottom.propTypes = {
+    toEnd: PropTypes.func
+}
+
+
+const SearchItem = ({ id, title, url, description, language, updateAt }) => {
+    return (<RepoBlock key={id}>
+        <RepoTitle>
+            <a href={url}>{title}</a>
+        </RepoTitle>
+        <RepoDescription>
+            {description}
+        </RepoDescription>
+        <RepoInfo>
+            {language ?
+                <RepoInfoItem>
+                    <RepoLanguageDot />
+                    <RepoLanguage>{language}</RepoLanguage>
+                </RepoInfoItem>
+                : <></>}
+            {updateAt ?
+                <RepoInfoItem>
+                    <RepoLanguage>
+                        {updateAt.split("T")[0]}
+                    </RepoLanguage>
+                </RepoInfoItem>
+                : <></>}
+        </RepoInfo>
+    </RepoBlock>);
 }
 
 SearchItem.propTypes = {
     id: PropTypes.number,
     title: PropTypes.string,
-    url: PropTypes.string
+    url: PropTypes.string,
+    description: PropTypes.string,
+    language: PropTypes.string,
+    updateAt: PropTypes.string
 }
 
 
-const SearchResult = ({ children, isLoading, changePage, isFetchAll }) => {
+const SearchResult = ({ children }) => {
     return (
         <ul>
-            { children}
-            { isLoading ? <div>Loading...</div> : <SearchBottom toEnd={changePage} />}
+            {children}
         </ul>
     );
 }
 
 SearchResult.propTypes = {
-    searchResult: PropTypes.array,
-    isLoading: PropTypes.bool,
-    changePage: PropTypes.func,
-    isFetchAll: PropTypes.bool
+    children: PropTypes.node,
 };
 
-export { SearchResult, SearchItem };
+export { SearchResult, SearchItem, SearchBottom };

@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 const GitHubDomain = "https://api.github.com";
 const RepoSearchPath = "/search/repositories";
 const UrlQueryPara = "q";
@@ -7,12 +6,15 @@ const UrlQueryPage = "page";
 const UrlQueryPerPage = "per_page";
 const UrlQuerySort = "sort";
 const UrlQueryOrder = "order";
+const RequestRateLimit = 10;
+const RequestRateLimitTime = 120000;
 
 export const DefaultPage = 1;
 export const DefaultPerPage = 30;
 export const AcceptContent = "application/vnd.github.v3+json";
 export const DefaultSort = "stars";
 export const DefaultOrder = "desc";
+export const OverRateLimitMessage = "For unauthenticated requests, the rate limit allows you to make up to 10 requests per minute.";
 
 const DetectPosition = (node, win) => {
     if (!node || !win) {
@@ -20,7 +22,7 @@ const DetectPosition = (node, win) => {
     }
     let top = node.top;
     let height = node.height;
-    var innerHeight = win.innerHeight;
+    let innerHeight = win.innerHeight;
 
     if (0 <= (top + height) && top <= (innerHeight)) {
         return true;
@@ -35,7 +37,27 @@ DetectPosition.propTypes = {
 
 
 
+const IsOverRateLimit = (count, lastDate) => {
+    if (!lastDate) {
+        return { notOver: false, reset: false };
+    }
+    let now = new Date();
+    if ((now.getTime() - lastDate.getTime()) > RequestRateLimitTime) {
+        return { notOver: true, reset: true };
+    }
+    else {
+        if (count + 1 > RequestRateLimit) {
+            return { notOver: false, reset: false };
+        } else {
+            return { notOver: true, reset: false };
+        }
+    }
+}
 
+IsOverRateLimit.propTypes = {
+    count: PropTypes.number,
+    lastDate: PropTypes.PropTypes.instanceOf(Date)
+}
 
 const GetSearchUrl = ({ keyWord, perPage = DefaultPerPage }) => {
     if (!keyWord) {
@@ -94,4 +116,4 @@ FetchGitRepo.propTypes = {
 };
 
 
-export { GetSearchUrl, UpdateSearchUrl, FetchGitRepo, DetectPosition };
+export { GetSearchUrl, UpdateSearchUrl, FetchGitRepo, DetectPosition, IsOverRateLimit };
