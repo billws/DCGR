@@ -16,7 +16,7 @@ on:
 jobs:
   build:
     # Name the Job
-    name: Lint Code Base
+    name: Lint/Test Code Base
     # Set the agent to run on
     runs-on: ubuntu-latest
 
@@ -35,5 +35,8 @@ jobs:
       ################################
       - name: Install modules
         run: npm install
+      - name: Run test
+        run: npm run test  
       - name: Run build
         run: npm run build
+      

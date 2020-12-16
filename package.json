@@ -1,17 +1,19 @@
 {
-  "name": "dcg_test",
-  "version": "1.0.0",
-  "description": "",
+  "name": "DCGR",
+  "version": "1.1.0",
+  "description": "Serach Github Repository using React.js and React Hook",
   "main": "/src/index.js",
   "scripts": {
     "start": "webpack serve",
     "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test-c": "jest --coverage"
   },
-  "author": "",
+  "author": "Bill Wu",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",
@@ -19,6 +21,8 @@
     "eslint-loader": "^4.0.2",
     "eslint-plugin-react": "^7.21.5",
     "html-webpack-plugin": "^4.5.0",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
