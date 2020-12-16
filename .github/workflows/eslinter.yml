@@ -35,11 +35,8 @@ jobs:
       ################################
       - name: Install modules
         run: npm install
-      - name: Run build
-        run: npm run build
-    steps:
-      ################################
-      # Run jest for unit test #
-      ################################
       - name: Run test
         run: npm run test  
+      - name: Run build
+        run: npm run build
+      
