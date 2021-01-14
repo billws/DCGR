@@ -33,3 +33,10 @@
 > \*stylecomponents\*
     All styled components saved in this folder.
 
+
+
+## Improvement
+
+- Using memo or pure component to avoid re-render same porps components.
+- Windowing the components for displaying lists.
+
