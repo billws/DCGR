@@ -37,6 +37,7 @@
 
 ## Improvement
 
+- Saving the data if loaded before.
 - Using memo or pure component to avoid re-render same porps components.
 - Windowing the components for displaying lists.
 
